@@ -104,7 +104,8 @@ class ProductsService extends ChangeNotifier {
 
   Future<String?> uploadImage() async {
     if (this.newPictureFile == null) return null;
-    this.isLoading = true;
+    // this.isLoading = true;
+    this.isSaving = true;
     notifyListeners();
 
     final url = Uri.parse(
