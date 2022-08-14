@@ -1,4 +1,4 @@
-//import 'dart:html';
+///import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -84,7 +84,7 @@ class _ProductScreenBody extends StatelessWidget {
                     )),
 
                 //Galeria funcion y Boton
-                /*Positioned(
+                Positioned(
                     top: 100,
                     right: 20,
                     child: IconButton(
@@ -108,7 +108,7 @@ class _ProductScreenBody extends StatelessWidget {
                       }, //vueleve atras
                       icon: Icon(Icons.add_photo_alternate_outlined,
                           size: 40, color: Colors.white),
-                    )),*/
+                    )),
               ],
             ),
             _ProductForm(),
@@ -118,16 +118,20 @@ class _ProductScreenBody extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.save_outlined),
-        onPressed: () async {
-          // Todo: Guardar Producto  - hace un retounr
-          if (!productForm.isValidForm()) return;
+        child: productService.isSaving
+            ? CircularProgressIndicator(color: Colors.white)
+            : Icon(Icons.save_outlined),
+        onPressed: productService.isSaving
+            ? null
+            : () async {
+                // Todo: Guardar Producto  - hace un retounr
+                if (!productForm.isValidForm()) return;
 
-          final String? imageUrl = await productService.uploadImage();
+                final String? imageUrl = await productService.uploadImage();
 
-          print(imageUrl);
-          await productService.saveOrCreateProduct(productForm.product);
-        },
+                if (imageUrl != null) productForm.product.picture = imageUrl;
+                await productService.saveOrCreateProduct(productForm.product);
+              },
       ),
     );
   }

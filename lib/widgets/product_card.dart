@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:worldlan_apps/models/models.dart';
 
@@ -11,9 +13,9 @@ class ProductCard extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Container(
-          margin: EdgeInsets.only(top: 30, bottom: 50),
+          margin: EdgeInsets.only(top: 30, bottom: 30),
           width: double.infinity,
-          height: 400,
+          height: 480,
           decoration: _cardBorders(),
           child: Stack(
             alignment: Alignment.bottomLeft,
@@ -154,25 +156,40 @@ class _BackgroundImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(25),
-      child: Container(
-          width: double.infinity,
-          height: 400,
-          child: url == null
-              ? //condicional para cuando no tiene imagen
-              Image(
-                  image: AssetImage("assets/no-image.png"),
-                  fit: BoxFit.cover,
-                )
-              : FadeInImage(
-                  // TODO Productos cuando  cuando no hay imagen
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      child: ClipRRect(
 
-                  placeholder: AssetImage(
-                      "assets/jar-loading.gif"), // Ruta de imagenes de carga
-                  image: NetworkImage(url!),
-                  fit: BoxFit.cover,
-                )),
+          //ClipRRect SIRVER PARA DAR BORDES A LO Q TENGA DENTRO
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(40),
+              bottomRight: Radius.circular(20),
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(45)),
+          child: getImage(url)),
+    );
+  }
+
+  Widget getImage(String? picture) {
+    if (picture == null) {
+      return Image(
+        image: AssetImage('assets/no-image.jpg'),
+        fit: BoxFit.cover,
+      );
+    }
+
+    if (picture.startsWith('http')) {
+      return FadeInImage(
+        placeholder: AssetImage('assets/jar-loading.gif'),
+        image: NetworkImage(url!), //3ce900
+        fit: BoxFit.cover,
+      );
+    }
+
+    return Image.file(
+      File(picture),
+      fit: BoxFit.cover,
     );
   }
 }

@@ -2,6 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+
 class ProductImage extends StatelessWidget {
   final String? url;
 
@@ -29,7 +33,7 @@ class ProductImage extends StatelessWidget {
   }
 
   BoxDecoration _buildBoxDecoration() => BoxDecoration(
-          color: Colors.black, // Color de Opacidad
+          color: Colors.blue, // Color de Opacidad
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(45), topRight: Radius.circular(45)),
           boxShadow: [
@@ -40,14 +44,14 @@ class ProductImage extends StatelessWidget {
           ]);
 
 // Widget de Imagen
-  Widget getImage(String? picture) {
+  /*Widget getImage(String? picture) {
 // Si es nulo no hace nada
     if (picture == null)
       return Image(
         image: AssetImage("assets/no-image.png"),
         fit: BoxFit.cover,
       );
-
+ 
     // Si es un http
     if (picture.startsWith("http"))
       FadeInImage(
@@ -56,6 +60,28 @@ class ProductImage extends StatelessWidget {
         fit: BoxFit.cover,
       );
     // Si no cumple las funciones anteriores hace esto
+    return Image.file(
+      File(picture),
+      fit: BoxFit.cover,
+    );
+  }*/
+
+  Widget getImage(String? picture) {
+    if (picture == null) {
+      return Image(
+        image: AssetImage('assets/no-image.jpg'),
+        fit: BoxFit.cover,
+      );
+    }
+
+    if (picture.startsWith('http')) {
+      return FadeInImage(
+        placeholder: AssetImage('assets/jar-loading.gif'),
+        image: NetworkImage(url!), //3ce900
+        fit: BoxFit.cover,
+      );
+    }
+
     return Image.file(
       File(picture),
       fit: BoxFit.cover,
